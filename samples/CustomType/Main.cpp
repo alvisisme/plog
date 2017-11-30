@@ -25,7 +25,7 @@ int main()
     Point pt1 = { 0, 0 };
     Point pt2 = { 10, -5 };
 
-    LOGI << "We've got a line with coords: " << pt1 << pt2; // Print our type to the log stream.
+    PLOGI << "We've got a line with coords: " << pt1 << pt2; // Print our type to the log stream.
 
     return 0;
 }

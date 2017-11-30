@@ -73,9 +73,9 @@ int main()
     // Step3: write log messages using a special macro. 
     // There are several log macros, use the macro you liked the most.
 
-    LOGD << "Hello log!"; // short macro
-    LOG_DEBUG << "Hello log!"; // long macro
-    LOG(plog::debug) << "Hello log!"; // function-style macro
+    PLOGD << "Hello log!"; // short macro
+    PLOG_DEBUG << "Hello log!"; // long macro
+    PLOG(plog::debug) << "Hello log!"; // function-style macro
 
     return 0;
 }
@@ -169,31 +169,31 @@ This is the most used type of logging macros. They do unconditional logging.
 #### Long macros:
 
 ```cpp
-LOG_VERBOSE << "verbose";
-LOG_DEBUG << "debug";
-LOG_INFO << "info";
-LOG_WARNING << "warning";
-LOG_ERROR << "error";
-LOG_FATAL << "fatal";
-LOG_NONE << "none";
+PLOG_VERBOSE << "verbose";
+PLOG_DEBUG << "debug";
+PLOG_INFO << "info";
+PLOG_WARNING << "warning";
+PLOG_ERROR << "error";
+PLOG_FATAL << "fatal";
+PLOG_NONE << "none";
 ```
 
 #### Short macros:
 
 ```cpp
-LOGV << "verbose";
-LOGD << "debug";
-LOGI << "info";
-LOGW << "warning";
-LOGE << "error";
-LOGF << "fatal";
-LOGN << "none";
+PLOGV << "verbose";
+PLOGD << "debug";
+PLOGI << "info";
+PLOGW << "warning";
+PLOGE << "error";
+PLOGF << "fatal";
+PLOGN << "none";
 ```
 
 #### Function-style macros:
 
 ```cpp
-LOG(severity) << "msg";
+PLOG(severity) << "msg";
 ```
 
 ### Conditional logging macros
@@ -202,31 +202,31 @@ These macros are used to do a conditional logging. They accept a condition as a 
 #### Long macros:
 
 ```cpp
-LOG_VERBOSE_IF(cond) << "verbose";
-LOG_DEBUG_IF(cond) << "debug";
-LOG_INFO_IF(cond) << "info";
-LOG_WARNING_IF(cond) << "warning";
-LOG_ERROR_IF(cond) << "error";
-LOG_FATAL_IF(cond) << "fatal";
-LOG_NONE_IF(cond) << "none";
+PLOG_VERBOSE_IF(cond) << "verbose";
+PLOG_DEBUG_IF(cond) << "debug";
+PLOG_INFO_IF(cond) << "info";
+PLOG_WARNING_IF(cond) << "warning";
+PLOG_ERROR_IF(cond) << "error";
+PLOG_FATAL_IF(cond) << "fatal";
+PLOG_NONE_IF(cond) << "none";
 ```
 
 #### Short macros:
 
 ```cpp
-LOGV_IF(cond) << "verbose";
-LOGD_IF(cond) << "debug";
-LOGI_IF(cond) << "info";
-LOGW_IF(cond) << "warning";
-LOGE_IF(cond) << "error";
-LOGF_IF(cond) << "fatal";
-LOGN_IF(cond) << "none";
+PLOGV_IF(cond) << "verbose";
+PLOGD_IF(cond) << "debug";
+PLOGI_IF(cond) << "info";
+PLOGW_IF(cond) << "warning";
+PLOGE_IF(cond) << "error";
+PLOGF_IF(cond) << "fatal";
+PLOGN_IF(cond) << "none";
 ```
 
 #### Function-style macros:
 
 ```cpp
-LOG_IF(severity, cond) << "msg";
+PLOG_IF(severity, cond) << "msg";
 ```
 
 ### Logger severity checker
@@ -243,7 +243,7 @@ IF_LOG(plog::debug) // we want to execute the following statements only at debug
 {
     for (int i = 0; i < vec.size(); ++i)
     {
-        LOGD << "vec[" << i << "]: " << vec[i];
+        PLOGD << "vec[" << i << "]: " << vec[i];
     }
 }
 ```
@@ -323,8 +323,8 @@ Logger<instance>* get<instance>();
 All logging macros have their special versions that accept an instance parameter. These kind of macros have an underscore at the end:
 
 ```cpp
-LOGD_(instance) << "debug";
-LOGD_IF_(instance, condition) << "conditional debug";
+PLOGD_(instance) << "debug";
+PLOGD_IF_(instance, condition) << "conditional debug";
 IF_LOG_(instance, severity)
 ```
 
@@ -342,10 +342,10 @@ int main()
     plog::init<SecondLog>(plog::debug, "MultiInstance-second.txt"); // Initialize the 2nd logger instance.
 
     // Write some messages to the default log.
-    LOGD << "Hello default log!";
+    PLOGD << "Hello default log!";
 
     // Write some messages to the 2nd log.
-    LOGD_(SecondLog) << "Hello second log!";
+    PLOGD_(SecondLog) << "Hello second log!";
 
     return 0;
 }
@@ -370,7 +370,7 @@ extern "C" void EXPORT initialize(plog::Severity severity, plog::IAppender* appe
 // Function that produces a log message.
 extern "C" void EXPORT foo()
 {
-    LOGI << "Hello from shared lib!";
+    PLOGI << "Hello from shared lib!";
 }
 ```
 
@@ -385,7 +385,7 @@ int main()
 {
     plog::init(plog::debug, "ChainedApp.txt"); // Initialize the main logger.
 
-    LOGD << "Hello from app!"; // Write a log message.
+    PLOGD << "Hello from app!"; // Write a log message.
 
     initialize(plog::debug, plog::get()); // Initialize the logger in the shared library. Note that it has its own severity.
     foo(); // Call a function from the shared library that produces a log message.
@@ -779,7 +779,7 @@ DebugOutputAppender<Formatter>::DebugOutputAppender();
 Log messages are constructed using lazy stream evaluation. It means that if a log message will be dropped (because of its severity) then stream output operators are not executed. Thus performance penalty of unprinted log messages is negligible.
 
 ```cpp
-LOGD << /* the following statements will be executed only when the logger severity is debug or higher */ ...
+PLOGD << /* the following statements will be executed only when the logger severity is debug or higher */ ...
 ```
 
 ## Stream improvements over std::ostream
